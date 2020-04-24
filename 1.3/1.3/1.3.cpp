@@ -144,7 +144,7 @@ int Fourth()
 	pred = slov = 0;
 	char ch;
 
-	f.open("input.txt");
+	f.open("D:\\moa-195\\yaziki_progi\\2_sem\\input.txt");
 
 
 	if (!f)
@@ -169,7 +169,7 @@ int Fourth()
 
 
 	//----------------
-	f.open("input.txt");
+	f.open("D:\\moa-195\\yaziki_progi\\2_sem\\input.txt");
 
 	while (!f.eof())
 	{

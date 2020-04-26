@@ -1,44 +1,22 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#include <iostream>
-#include <string.h>
-#include <time.h>
-#include <cstdlib>
-#include <cstdio>
-#include <fstream>
+﻿//Общие задания :
+#define _CRT_SECURE_NO_WARNINGS
 
+#include <iostream>
+#include <cstring>
+#include <string.h>
 
 using namespace std;
 
 void First();
 void Second();
-int Palindrom(char* String);
-int Fourth();
-
+void Third();
 
 
 int main()
 {
-	setlocale(LC_ALL, "");
 	First();
 	Second();
-
-	
-	cout << endl << endl << "Exersize #3" << endl;
-
-	char String[256];
-	cout << "Enter your sentence: ";
-	cin.getline(String, 256);
-
-	int f = Palindrom(String);
-
-	if (f == 0)
-		cout << endl << "It is not palindrom!";
-	else
-		cout << endl << "It is palindrom!";
-	//---------------------------------------------
-
-
-	Fourth();
+	Third();
 
 	return 0;
 }
@@ -48,154 +26,95 @@ void First()
 {
 	cout << "Exersize #1" << endl;
 
-	char str[255];
-	cout << endl << "Enter your string: " << endl;
-	cin.getline(str, 255);
+	char str[] = "PrOgRaMmInG, TeStInG, EnDing.";
+	cout << "String before transforming: " << str << endl;
 
 	char ch = str[0];
-	int n = 0;
-	int k = 0;
+	int i = 0;
 
 	while (ch != '\0')
 	{
-		n++;
-		k++;
-		ch = str[k];
+		if (('A' <= str[i]) && (str[i] <= 'Z'))
+			str[i] ^= 0x20;
+		i++;
+		ch = str[i];
 	}
 
-	cout << endl << "Length of string: " << n << endl;
+	cout << "String after transforming: " << str << endl;
 }
 
 
 void Second()
 {
 	cout << endl << endl << "Exersize #2" << endl;
-	srand(time(0));
+	char sent[] = "Do you like programming? \nI love programming \nBut sometimes I lose my head from love.";
+	char word[] = "programming";
 
-	char article[2][16]{ "the", "a" };
-	char noun[5][20]{ "front", "heat", "hate", "turn", "account" };
-	char verb[5][20]{ "say", "go", "get", "do", "be" };
-	char predlog[5][10]{ "after", "above", "in", "from", "beside" };
+	size_t n = 0;
+	size_t len = strlen(word);
 
-	char str[255] = "";
-
-	strcat(str, article[rand() % 2]);
-
-	if (strlen(str) == 0)
-		strcat(str, noun[rand() % 5]);
-	else
+	for (const char* src = sent; (src = strstr(src, word)) != NULL; src += len)
 	{
-		strcat(str, " ");
-		strcat(str, noun[rand() % 5]);
+		n++;
 	}
 
-	strcat(str, " ");
-	strcat(str, verb[rand() % 5]);
-	strcat(str, " ");
-	strcat(str, predlog[rand() % 5]);
-	strcat(str, " ");
-	strcat(str, article[rand() % 2]);
-	strcat(str, " ");
-	strcat(str, noun[rand() % 5]);
-	strcat(str, ".");
-
-	str[0] ^= 0x20;
-
-
-	cout << "Generated sentence:  " << str << endl;
+	cout << "Text: " << endl << sent << endl;
+	cout << endl << "Word for searching:  " << word << endl;
+	cout << endl << "The number of same words: " << n << endl;
 }
 
 
-int Palindrom(char String[])
-{
-	char str[256] = "";
-	int k = 0;
 
-	for (int i = 0; i < strlen(String); i++)
+void Third()
+{
+	cout << endl << endl << "Exersize #3" << endl;
+
+	/* Массив для хранения введенной строки */
+	char String[30000] = "I love programming!";
+
+	cout << endl << "String before sorting:  " << String << endl;
+
+	/* Массив номеров позиций, с которых начинаются слова */
+	int Words[15000];
+
+	/* Количество введенных слов */
+	int Number;
+
+
+	int i, j, Temp;
+	int Flag; /* Признак окончания слова */
+
+	/* Предварительная обработка */
+	for (Number = 0, Flag = 1, i = 0; String[i]; i++)
 	{
-		if (isalpha(String[i]))
+		/* Все пробелы заменяем на символ конца строки */
+		if (String[i] == ' ')
 		{
-			str[k] = String[i];
-			k++;
+			String[i] = 0;
+			Flag = 1;
+		}
+		/* Позиции первых после пробелов символов записываем в массив */
+		else if (Flag)
+		{
+			Words[Number++] = i;
+			Flag = 0;
 		}
 	}
 
-
-	for (int i = 0; i < strlen(str); i++)
-		if (tolower(str[i]) != tolower(str[strlen(str) - 1 - i]))
-			return 0;
-
-	return 1;
-}
-
-
-
-int Fourth()
-{
-	cout << endl << endl << "Exersize #4";
-
-	ifstream f;
-	char buk[87] = "qwetryuiopasdfghjklzxcbvnm";
-	char pre[4] = "!?.";
-	char str[255] = "";
-	char temp[100];
-
-	int pred, slov;
-	pred = slov = 0;
-	char ch;
-
-	f.open("D:\\moa-195\\yaziki_progi\\2_sem\\input.txt");
-
-
-	if (!f)
-	{
-		printf("Cannot open input file.\n");
-		return 0;
-	}
-
-	while (!f.eof())
-	{
-		f >> (temp);
-		strcat(str, temp);
-		strcat(str, " ");
-	}
-
-	cout << endl << "Text:  " << str;
-
-
-	f.close();
-
-
-
-
-	//----------------
-	f.open("D:\\moa-195\\yaziki_progi\\2_sem\\input.txt");
-
-	while (!f.eof())
-	{
-		ch = f.get();
-		if (ch == ' ' || ch == '\n' || ch == '\t')
-			slov++; //Считает пробелы, табуляцию и переход на следущую строку.
-	}
-
-	cout << endl << "Words in text: " << slov + 1; //на 1 слово больше так как пробела после него нет.
-	f.close();
-	
-	f.open("input.txt");
-	while (!f.eof())
-	{
-		ch = f.get();
-
-		for (int i = 0; i < 3; i++)
-			if (ch == pre[i])
+	/* Сортировка */
+	for (j = Number - 1; j > 0; j--)
+		for (i = 0; i < j; i++)
+			if (strcmp(&String[Words[i]], &String[Words[i + 1]]) > 0)
 			{
-				pred++;
-				break;
+				Temp = Words[i];
+				Words[i] = Words[i + 1];
+				Words[i + 1] = Temp;
 			}
-	}
 
-	f.close();
-	cout << endl << "Sentences in text: " << pred;
 
-	return 1;
+
+	/* Вывод результата */
+	cout << endl << "Sorted words:" << endl;
+	for (i = 0; i < Number; i++)
+		cout << &String[Words[i]] << endl;
 }
